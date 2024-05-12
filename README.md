@@ -1,7 +1,6 @@
 # Image Dataset Splitter
 
-
-This code is aimed at splitting a dataset into training and testing sets and organizing them into separate folders. It's particularly useful for machine learning tasks where a dataset needs to be divided for training and evaluation purposes.
+This Python script automates the process of splitting an image dataset into training and testing sets and organizing them into separate folders.
 
 ## Table of Contents
 
@@ -15,11 +14,11 @@ This code is aimed at splitting a dataset into training and testing sets and org
 
 ## Introduction
 
-This project is aimed at splitting a dataset into training and testing sets and organizing them into separate folders. It's particularly useful for machine learning tasks where a dataset needs to be divided for training and evaluation purposes.
+This script is particularly useful for machine learning projects where a dataset of images needs to be divided for training and evaluation purposes. It simplifies the process by automatically splitting the dataset into two parts based on a specified ratio and organizing the images into separate folders for training and testing.
 
 ## Getting Started
 
-To get started with this project, follow the instructions below.
+To use this script, follow the instructions below.
 
 ### Prerequisites
 
@@ -34,9 +33,47 @@ To get started with this project, follow the instructions below.
 
 ## Usage
 
-1. Ensure your dataset is stored in a folder on Google Drive.
-2. Update the `data_path`, `train_path`, and `test_path` variables in the provided code to match your folder structure.
-3. Run the code to split the dataset into training and testing sets and organize them into separate folders.
+1. **Prepare Your Dataset:** Ensure your dataset is stored in a folder on Google Drive.
+
+2. **Update Paths:** Update the `data_path`, `train_path`, and `test_path` variables in the provided code to match your folder structure.
+
+3. **Run the Script:** Execute the script to split the dataset into training and testing sets and organize them into separate folders. 
+
+    ```python
+    # Mount Google Drive
+    from google.colab import drive
+    drive.mount('/content/drive')
+
+    # Import necessary libraries
+    import os
+    import shutil
+    from sklearn.model_selection import train_test_split
+
+    # Define paths for data manipulation
+    data_path = '/content/drive/My Drive/example_dataset/input_data'
+    train_path = '/content/drive/My Drive/example_dataset/train_data'
+    test_path = '/content/drive/My Drive/example_dataset/test_data'
+
+    # Ensure the existence of required folders, if not, create them
+    if not os.path.exists(train_path):
+        os.makedirs(train_path)
+    if not os.path.exists(test_path):
+        os.makedirs(test_path)
+
+    # Load image data
+    image_names = os.listdir(data_path)
+
+    # Split the data into train and test sets
+    train_names, test_names = train_test_split(image_names, test_size=0.2, random_state=42)
+
+    # Move the training data
+    for image_name in train_names:
+        shutil.move(os.path.join(data_path, image_name), os.path.join(train_path, image_name))
+
+    # Move the test data
+    for image_name in test_names:
+        shutil.move(os.path.join(data_path, image_name), os.path.join(test_path, image_name))
+    ```
 
 ## Contributing
 
